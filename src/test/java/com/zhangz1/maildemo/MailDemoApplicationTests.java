@@ -1,4 +1,4 @@
-package com.example.maildemo;
+package com.zhangz1.maildemo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
