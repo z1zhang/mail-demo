@@ -11,7 +11,7 @@ public interface MailService {
      * @param receiver 接收方
      * @param title    发送的标题
      * @param text     发送的内容
-     * @return 发送成功
      */
-    String send(String receiver, String title, String text);
+    void send(String receiver, String title, String text);
+
 }

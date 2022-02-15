@@ -21,6 +21,7 @@ public class MailServiceImpl implements MailService {
 
     @Resource
     JavaMailSender mailSender;
+
     private final Logger logger = LoggerFactory.getLogger(MailService.class);
 
     /**
@@ -29,10 +30,9 @@ public class MailServiceImpl implements MailService {
      * @param receiver 接收方
      * @param title    发送的标题
      * @param text     发送的内容
-     * @return 发送成功
      */
     @Override
-    public String send(String receiver, String title, String text) {
+    public void send(String receiver, String title, String text) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom(sender);
@@ -43,6 +43,5 @@ public class MailServiceImpl implements MailService {
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
-        return "发送成功";
     }
 }
