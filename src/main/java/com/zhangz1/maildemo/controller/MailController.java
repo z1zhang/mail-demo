@@ -31,14 +31,14 @@ public class MailController {
         try {
             mailService.send(user.getEmail(), title, text);
         } catch (Exception e) {
-            restResponse.setCode(MailEnum.SEND_SUCCESS.getCode());
-            restResponse.setMessage(MailEnum.SEND_SUCCESS.getMessage());
+            restResponse.setCode(MailEnum.SEND_FAILURE.getCode());
+            restResponse.setMessage(MailEnum.SEND_FAILURE.getMessage());
             return restResponse;
         }
         request.getSession().setAttribute("verifyCode", verifyCode);
         request.getSession().setAttribute("email", user.getEmail());
-        restResponse.setCode(MailEnum.SEND_FAILURE.getCode());
-        restResponse.setMessage(MailEnum.SEND_FAILURE.getMessage());
+        restResponse.setCode(MailEnum.SEND_SUCCESS.getCode());
+        restResponse.setMessage(MailEnum.SEND_SUCCESS.getMessage());
         return restResponse;
     }
 
