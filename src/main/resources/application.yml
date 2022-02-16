@@ -1,12 +1,27 @@
 spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://xxxx:3306/demo
+    username: xxxx
+    password: xxxx
   mail:
-    host: # 邮箱服务器 例：smtp.qq.com
-    username: ****@qq.com
-    password: ****
+    port: 465
+    host: smtp.exmail.qq.com  # 邮箱服务器
+    username: xxxx
+    password: xxxx
     properties:
       mail:
         smtp:
           auth: true
-          starttls:
-            enable: true
-            required: true
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+            port: 465
+mybatis-plus:
+  global-config:
+    #取消banner打印
+    banner: false
+  configuration:
+    #控制台打印完整带参数SQL语句
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #mapper映射文件路径
+  mapper-locations: mapper/**.xml

@@ -1,6 +1,9 @@
 package com.zhangz1.maildemo.service.impl;
 
-import com.zhangz1.maildemo.service.MailService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zhangz1.maildemo.domain.entity.User;
+import com.zhangz1.maildemo.mapper.UserMapper;
+import com.zhangz1.maildemo.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +17,7 @@ import javax.annotation.Resource;
  * Created by zhangz1 on 2022/2/13 22:57
  */
 @Service
-public class MailServiceImpl implements MailService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     @Value("${spring.mail.username}")
     private String sender;
@@ -22,7 +25,7 @@ public class MailServiceImpl implements MailService {
     @Resource
     JavaMailSender mailSender;
 
-    private final Logger logger = LoggerFactory.getLogger(MailService.class);
+    private final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     /**
      * 邮件发送
@@ -43,5 +46,16 @@ public class MailServiceImpl implements MailService {
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
+    }
+
+    /**
+     * 添加用户
+     *
+     * @param user user
+     * @return Boolean
+     */
+    @Override
+    public boolean save(User user) {
+        return baseMapper.save(user);
     }
 }

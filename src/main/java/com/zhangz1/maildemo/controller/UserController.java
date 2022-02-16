@@ -1,9 +1,10 @@
 package com.zhangz1.maildemo.controller;
 
 import com.zhangz1.maildemo.constants.enums.MailEnum;
+import com.zhangz1.maildemo.constants.enums.UserEnum;
 import com.zhangz1.maildemo.domain.entity.User;
 import com.zhangz1.maildemo.constants.RestResponse;
-import com.zhangz1.maildemo.service.MailService;
+import com.zhangz1.maildemo.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -17,10 +18,10 @@ import java.util.Random;
  */
 @CrossOrigin
 @RestController
-public class MailController {
+public class UserController {
 
     @Resource
-    private MailService mailService;
+    private UserService userService;
 
     @RequestMapping(value = "/sendMail", method = RequestMethod.POST)
     public RestResponse<String> send(@RequestBody User user, HttpServletRequest request) {
@@ -29,22 +30,22 @@ public class MailController {
         String title = "验证码";
         String text = "您的验证码为" + verifyCode + "，请勿泄露此验证码。\n如非本人操作，请忽略该邮件。\n(这是一封自动发送的邮件，请勿回复）";
         try {
-            mailService.send(user.getEmail(), title, text);
+            userService.send(user.getEmail(), title, text);
         } catch (Exception e) {
-            restResponse.setCode(MailEnum.SEND_FAILURE.getCode());
+            restResponse.setStatus(MailEnum.SEND_FAILURE.getStatus());
             restResponse.setMessage(MailEnum.SEND_FAILURE.getMessage());
             return restResponse;
         }
         request.getSession().setAttribute("verifyCode", verifyCode);
         request.getSession().setAttribute("email", user.getEmail());
-        restResponse.setCode(MailEnum.SEND_SUCCESS.getCode());
+        restResponse.setStatus(MailEnum.SEND_SUCCESS.getStatus());
         restResponse.setMessage(MailEnum.SEND_SUCCESS.getMessage());
         return restResponse;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/verify", method = RequestMethod.POST)
-    public RestResponse<String> verify(@RequestBody User user, HttpServletRequest request) {
+    @RequestMapping(value = "/addUser", method = RequestMethod.POST)
+    public RestResponse<String> addUser(@RequestBody User user, HttpServletRequest request) {
         RestResponse<String> restResponse = new RestResponse<>();
         String email = (String) request.getSession().getAttribute("email");
         String verifyCode = (String) request.getSession().getAttribute("verifyCode");
@@ -52,15 +53,16 @@ public class MailController {
         map.put("verifyCode", user.getCode());
         map.put("email", user.getEmail());
         if (verifyCode.equals(map.get("verifyCode")) && email.equals(map.get("email"))) {
-            restResponse.setCode(MailEnum.VERIFY_SUCCESS.getCode());
-            restResponse.setMessage(MailEnum.VERIFY_SUCCESS.getMessage());
+            userService.save(user);
+            restResponse.setStatus(UserEnum.SAVE_SUCCESS.getStatus());
+            restResponse.setMessage(UserEnum.SAVE_SUCCESS.getMessage());
         }
         if (!verifyCode.equals(map.get("verifyCode"))) {
-            restResponse.setCode(MailEnum.CODE_FAILURE.getCode());
+            restResponse.setStatus(MailEnum.CODE_FAILURE.getStatus());
             restResponse.setMessage(MailEnum.CODE_FAILURE.getMessage());
         }
         if (!email.equals(map.get("email"))) {
-            restResponse.setCode(MailEnum.EMAIL_FAILURE.getCode());
+            restResponse.setStatus(MailEnum.EMAIL_FAILURE.getStatus());
             restResponse.setMessage(MailEnum.EMAIL_FAILURE.getMessage());
         }
         return restResponse;

@@ -1,9 +1,12 @@
 package com.zhangz1.maildemo.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.zhangz1.maildemo.domain.entity.User;
+
 /**
  * Created by zhang1 on 2022/2/13 17:02
  */
-public interface MailService {
+public interface UserService extends IService<User> {
 
     /**
      * 邮件发送
@@ -13,5 +16,14 @@ public interface MailService {
      * @param text     发送的内容
      */
     void send(String receiver, String title, String text);
+
+    /**
+     * 添加用户
+     *
+     * @param user user
+     * @return Boolean
+     */
+    @Override
+    boolean save(User user);
 
 }
