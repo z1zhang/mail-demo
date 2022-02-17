@@ -7,4 +7,10 @@
         insert into email (email, password)
         values (#{email}, #{password})
     </insert>
+    <select id="queryByEmail" resultType="java.lang.Integer">
+        select 1
+        from email
+        where email = #{email}
+        limit 1
+    </select>
 </mapper>

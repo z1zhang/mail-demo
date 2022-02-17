@@ -16,4 +16,12 @@ public interface UserMapper extends BaseMapper<User> {
      * @return Boolean
      */
     boolean save(User user);
+
+    /**
+     * 判断是否存在邮箱
+     *
+     * @param email 查询的邮箱
+     * @return 不存在返回0，存在返回1
+     */
+    Integer queryByEmail(String email);
 }
